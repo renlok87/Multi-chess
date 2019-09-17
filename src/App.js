@@ -5,6 +5,7 @@ import AuthRoute from './auth/AuthRoute';
 import Layout from './layout/Layout';
 
 const NotFoundRoute = lazy(() => import('./routes/404'));
+const LoginRoute = lazy(() => import('./routes/Login'));
 
 
 class App extends Component {
@@ -14,7 +15,8 @@ class App extends Component {
         <Layout>
           <Suspense>
             <Switch>
-              <AuthRoute exact path="/" component={HomeRoute} />
+              {/*<AuthRoute exact path="/" component={HomeRoute} />*/}
+              <Route path="/login" component={LoginRoute} />
               <Route component={NotFoundRoute} />
             </Switch>
           </Suspense>

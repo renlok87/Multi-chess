@@ -25,7 +25,11 @@
     "react-moment": "^0.9.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.1.1",
-    "subscriptions-transport-ws": "^0.9.16"
+    "subscriptions-transport-ws": "^0.9.16",
+    "apollo-client": "latest",
+    "apollo-utilities": "latest",
+    "apollo-link-error": "latest",
+    "apollo-cache-inmemory": "latest"
   },
   "devDependencies": {
     "eslint": "^5.15.3",
