@@ -3,26 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-scripts": "3.1.1",
     "apollo-boost": "^0.3.1",
     "apollo-link": "^1.2.11",
     "apollo-link-context": "^1.0.17",
     "apollo-link-http": "^1.5.14",
     "apollo-link-state": "^0.4.2",
     "apollo-link-ws": "^1.0.17",
+    "babel-eslint": "^10.0.3",
     "chess.js": "^0.10.2",
+    "eslint-plugin-prettier": "^3.1.0",
     "graphql": "^14.2.1",
     "install": "^0.12.2",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "npm": "^6.9.0",
     "prop-types": "^15.7.2",
+    "react": "^16.9.0",
     "react-apollo": "^2.5.3",
+    "react-dom": "^16.9.0",
     "react-draggable": "^3.2.1",
     "react-moment": "^0.9.1",
     "react-router-dom": "^5.0.0",
+    "react-scripts": "3.1.1",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
@@ -53,6 +55,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
     ]
   }
 }
