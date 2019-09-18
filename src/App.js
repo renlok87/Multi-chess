@@ -3,20 +3,25 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import AuthRoute from './auth/AuthRoute';
 import Layout from './layout/Layout';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 
 const NotFoundRoute = lazy(() => import('./routes/404'));
 const LoginRoute = lazy(() => import('./routes/Login'));
-
+const LogoutRoute = lazy(() => import('./routes/Logout'));
+const SignupRoute = lazy(() => import('./routes/Signup'));
+const HomeRoute = lazy(() => import('./routes/Home'));
 
 class App extends Component {
   render() {
     return (
       <Router>
         <Layout>
-          <Suspense>
+          <Suspense fallback={<LoadingSpinner />}>
             <Switch>
-              {/*<AuthRoute exact path="/" component={HomeRoute} />*/}
+              <AuthRoute exact path="/" component={HomeRoute} />
               <Route path="/login" component={LoginRoute} />
+              <Route path="/logout" component={LogoutRoute} />
+              <Route path="/signup" component={SignupRoute} />
               <Route component={NotFoundRoute} />
             </Switch>
           </Suspense>
