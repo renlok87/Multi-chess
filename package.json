@@ -29,7 +29,8 @@
     "apollo-client": "latest",
     "apollo-utilities": "latest",
     "apollo-link-error": "latest",
-    "apollo-cache-inmemory": "latest"
+    "apollo-cache-inmemory": "latest",
+    "graphql-tag": "latest"
   },
   "devDependencies": {
     "eslint": "^5.15.3",
