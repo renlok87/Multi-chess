@@ -54,7 +54,7 @@ class ChessGame extends Component {
     const fallenSoldiers = history
       .filter(move => move.captured)
       .map(move => {
-        return { color: move.color === 'w' ? 'b' : 'w', piece: move.piece };
+        return { color: move.color === 'w' ? 'b' : 'w', piece: move.captured };
       });
 
     this.setState({

@@ -62,7 +62,13 @@ const HomeRoute = () => {
 
       <Query query={QUERY}>
         {({ loading, error, data }) => {
-          if (loading) return <LoadingSpinner />;
+          if (loading)
+            return (
+              <LoadingSpinner
+                message="Heroku server may take up to 30 seconds to wake up on first request"
+                messageTimeout={3000}
+              />
+            );
           if (error) return <p className="message--error">{error.message}</p>;
 
           return (
@@ -83,8 +89,7 @@ const HomeRoute = () => {
                     me={data.me.id}
                     games={data.games.filter(
                       game =>
-                        game.playerOneID !== data.me.id &&
-                        game.playerTwoID !== data.me.id
+                        game.playerOneID !== data.me.id && !game.playerTwoID
                     )}
                   />
                 </CardBox>

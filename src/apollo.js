@@ -5,64 +5,70 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { onError } from 'apollo-link-error';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+
 import AuthGuard from './auth/AuthGuard';
 
-const httpLink = HttpLink({
-    uri: 'http://localhost:8000/graphql'
+const httpLink = new HttpLink({
+  uri: `${process.env.REACT_APP_GRAPHQL_SERVER}`
 });
+
 const wsLink = new WebSocketLink({
-    uri: `ws://localhost:8000/graphql`,
-    options: {
-        reconnect: true,
-        connectionParams: {
-            Authorization: AuthGuard.isAuthenticated()
-                ? `Bearer ${AuthGuard.isAuthenticated()}`
-                : null
-        }
+  uri: `${process.env.REACT_APP_GRAPHQL_SERVER_WS}`,
+  options: {
+    reconnect: true,
+    lazy: true,
+    connectionParams: () => {
+      const token = AuthGuard.isAuthenticated();
+      return {
+        Authorization: token ? `Bearer ${token}` : null
+      };
     }
+  }
 });
 
 const terminatingLink = split(
-    ({query}) => {
-        const {kind, operation} = getMainDefinition(query);
-        return kind === 'OperationDefinition' && operation === 'subscription';
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
     },
     wsLink,
     httpLink
 );
 
 const authLink = new ApolloLink((operation, forward) => {
-    operation.setContext(({ headers = {} }) => {
-        const token = AuthGuard.isAuthenticated();
+  operation.setContext(({ headers = {} }) => {
+    const token = AuthGuard.isAuthenticated();
 
-        if (token) {
-            headers = { ...headers, Authorization: token ? `Bearer ${token}` : null };
-        }
+    if (token) {
+      headers = { ...headers, Authorization: token ? `Bearer ${token}` : null };
+    }
 
-        return { headers };
-    });
+    return { headers };
+  });
 
-    return forward(operation);
+  return forward(operation);
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors) {
-        graphQLErrors.forEach(({ message, locations, path }) => {
-            console.log('GraphQL error', message);
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      console.log('GraphQL error', message);
 
-            if (message === 'UNAUTHENTICATED') {
-                console.log('Unauthenticated');
-            }
-        });
+      if (message === 'UNAUTHENTICATED') {
+        console.error('Unauthenticated');
+        document.location = '/logout';
+      }
+    });
+  }
+
+  if (networkError) {
+    console.log('Network error', networkError);
+
+    if (networkError.statusCode === 401 || networkError.statusCode === 400) {
+      console.error('Unauthenticated');
+      document.location = '/logout';
     }
-
-    if (networkError) {
-        console.log('Network error', networkError);
-
-        if (networkError.statusCode === 401) {
-            console.log('Unauthenticated');
-        }
-    }
+  }
 });
 
 const link = ApolloLink.from([authLink, errorLink, terminatingLink]);
@@ -70,9 +76,8 @@ const link = ApolloLink.from([authLink, errorLink, terminatingLink]);
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-    link,
-    cache
+  link,
+  cache
 });
 
 export default client;
-
