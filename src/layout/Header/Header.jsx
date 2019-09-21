@@ -13,7 +13,7 @@ const Header = () => {
         <div className="row align-items-center">
           <div className="col-auto">
             <Link className={styles.Header__Title} to="/">
-              React Chess
+              Multi Chess
             </Link>
           </div>
           <div className="col">
